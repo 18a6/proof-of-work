@@ -35,9 +35,9 @@ class Block:
             if(blockHash < target_hash):
                 #print the nonce
                 print(f"The block\'s hash is:{block.nonce}")
-                
+
                 #add the block to the blockchain
-                blockChain.append(block)
+                blockChain.blocks.append(block)
                 break
 
 
