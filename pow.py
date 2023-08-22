@@ -1,6 +1,11 @@
 import hashlib
 import sys
 
+class BlockChain:
+    def __init__(self):
+        self.blocks = []
+
+
 class Block:
     def __init__(self, data, previous_hash):
         self.nonce = 0
@@ -9,6 +14,8 @@ class Block:
 
     
     def mine(block, target_hash):
+        blockChain = BlockChain()
+
         for i in range(sys.maxsize):
             block.nonce = i
 
@@ -26,7 +33,11 @@ class Block:
 
             #compare the block's hash to the target hash
             if(blockHash < target_hash):
+                #print the nonce
                 print(f"The block\'s hash is:{block.nonce}")
+                
+                #add the block to the blockchain
+                blockChain.append(block)
                 break
 
 
