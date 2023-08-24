@@ -5,5 +5,4 @@
 
 <br>
 
-let's.. do whatever the hell that is (reference: https://www.jmeiners.com/tiny-blockchain/)
-
+let's.. do whatever the hell that is [reference](https://www.jmeiners.com/tiny-blockchain/)
