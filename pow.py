@@ -1,4 +1,3 @@
-import random
 import hashlib
 
 def hash(input):
@@ -47,6 +46,8 @@ class Block():
                 return
     
 class Blockchain():
+    __slots__ = 'blocks'
+
     def __init__(self):
         self.blocks = []
 
@@ -60,4 +61,4 @@ class Blockchain():
         self.blocks.append(block)
 
 blockchain = Blockchain()
-blockchain.add_block('hbhjnlmfld')
+blockchain.add_block('tx0: A -1BTC-> B')
