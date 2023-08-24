@@ -1,6 +1,9 @@
 import random
 import hashlib
 
+def hash(input):
+    return hashlib.sha256(str(input).encode('utf-8')).hexdigest()
+
 class Block():
     __slots__ = 'contents_hash', 'previous_hash', 'nonce'
     
@@ -15,32 +18,32 @@ class Block():
         # self.timestamp
 
         # this is adjusted to make the hash of this header fall in the valid range
-        self.nonce = 0
+        self.nonce = -1
     
     def build_block(self, previous, contents):
         assert isinstance(previous, Block) or previous == None
 
         if(previous):
             # calculate previous block header hash
-            previous_hash = previous.previous_hash
-            self.previous_hash = hashlib.sha256(previous_hash.encode('utf-8')).hexdigest()
+            self.previous_hash = hash(previous.previous_hash)
         else:
             # genesis has no previous. just use zeroed hash
             self.previous_hash = 0
 
     
         # add data hash
-        self.contents_hash = hashlib.sha256(str(contents).encode('utf-8')).hexdigest()
+        self.contents_hash = hash(contents)
 
     def mine_block(self):
-        MAX_HASH = 2 ** 6
-        target = hashlib.sha256(str(random.randint(0, MAX_HASH - 1)).encode('utf-8')).hexdigest()
+        MAX_HASH = 2 ** 256
+        target = 0x0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
         # MINING: start of the mining round
         for nonce in range(MAX_HASH):
-            current_hash = hashlib.sha256((self.contents_hash + str(nonce)).encode('utf-8')).hexdigest()
-            if(current_hash < target):
+            h = hash(self.contents_hash + str(nonce))
+            if (int(h, 16) < target):
                 self.nonce = nonce
-                print(nonce)
+                print(hash(self.contents_hash + str(nonce)))
                 return
     
 class Blockchain():
@@ -49,13 +52,12 @@ class Blockchain():
 
     def add_block(self, contents):
         block = Block()
-        if(len(self.blocks) == 0):
-            block.build_block(None, contents)
-
-        else:
+        if(len(self.blocks) != 0):
             block.build_block(self.blocks[-1], contents)
+        else:
+            block.build_block(None, contents)
         block.mine_block()
         self.blocks.append(block)
 
 blockchain = Blockchain()
-blockchain.add_block('0x0')
+blockchain.add_block('hbhjnlmfld')
